@@ -1,0 +1,48 @@
+<template>
+  <div>
+    <div id="stats"></div>
+  </div>
+</template>
+<script setup>
+import * as dat from 'dat.gui';
+import Stats from 'stats.js';
+
+const props = defineProps({
+  initGui: {
+    default: true,
+    type: Boolean
+  },
+  initStats: {
+    default: true,
+    type: Boolean
+  }
+});
+let stats, gui;
+const init = () => {
+  if (props.initGui) {
+    gui = new dat.GUI();
+  }
+  stats = new Stats();
+  const div = document.getElementById('stats');
+  div.appendChild(stats.domElement);
+
+  gui = new dat.GUI({
+    name: 'Animation Analytics'
+  });
+};
+init();
+
+const addGuiElem = () => {
+  alert();
+  if (props.initGui) {
+    gui.add(props, 'initGui').onChange(() => {
+      if (props.initGui) {
+        gui.domElement.style.display = 'block';
+      } else {
+        gui.domElement.style.display = 'none';
+      }
+    });
+  }
+};
+}
+</script>

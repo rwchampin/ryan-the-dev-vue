@@ -13,11 +13,14 @@
   },
   "dependencies": {
     "dat.gui": "^0.7.9",
+    "locomotive-scroll": "^4.1.4",
     "pinia": "^2.0.13",
     "random": "^3.0.6",
     "simple-input-events": "^2.0.0",
     "stats.js": "^0.17.0",
     "three": "^0.140.0",
+    "tweakpane": "^3.0.8",
+    "vite": "^2.9.9",
     "vue": "^3.2.33",
     "vue-router": "^4.0.14"
   },
@@ -38,8 +41,6 @@
     "prettier": "^2.5.1",
     "start-server-and-test": "^1.14.0",
     "typescript": "~4.6.3",
-    "vite": "^2.9.5",
-    "vitest": "^0.9.3",
-    "vue-tsc": "^0.34.7"
+    "vitest": "^0.9.3"
   }
 }

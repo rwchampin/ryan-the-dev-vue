@@ -1,0 +1,79 @@
+<template></template>
+<script setup>
+import * as THREE from 'three';
+var camera, scene, renderer,
+    geometry,delta, textGeo, textMaterial,light,text, textTexture, material,cubeSineDriver,smokeTexture, smokeGeo, smokeMaterial, smokeParticles, mesh;
+
+init();
+animate();
+
+function init() {
+
+
+
+    renderer = new THREE.WebGLRenderer({alpha: true});
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+    scene = new THREE.Scene();
+
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.set(0,0,0)
+    scene.add( camera );
+
+
+
+    THREE.ImageUtils.crossOrigin = ''; //Need this to pull in crossdomain images from AWS
+
+
+
+    light = new THREE.DirectionalLight(0xff0000,1);
+    light.position.set(0,50,0);
+    scene.add(light);
+
+    smokeTexture = new THREE.TextureLoader().load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/95637/Smoke-Element.png');
+    smokeMaterial = new THREE.MeshLambertMaterial({color: 0x515351, opacity: 0.9, map: smokeTexture, transparent: true});
+    smokeGeo = new THREE.PlaneGeometry(window.innerWidth,window.innerHeight);
+    smokeParticles = [];
+
+const radian = (Math.PI * 2) / 30;
+
+    for (let i = 0; i < 850; i++) {
+        var particle = new THREE.Mesh(smokeGeo,smokeMaterial);
+        particle.position.x = 0;//window.innerWidth / 2 + Math.cos(radian * i) * 30;
+        particle.position.y = 0;//window.innerHeight / 2 + Math.sin(radian * i) * 30;
+        particle.rotation.z = 0;
+        scene.add(particle);
+        smokeParticles.push(particle);
+    }
+camera.position.z = 20;
+camera.lookAt(0,0,0);
+   document.body.append( renderer.domElement );
+
+}
+
+function animate() {
+
+    // note: three.js includes requestAnimationFrame shim
+
+
+    requestAnimationFrame( animate );
+    evolveSmoke();
+    render();
+
+}
+
+function evolveSmoke() {
+    var sp = smokeParticles.length;
+    while(sp--) {
+        smokeParticles[sp].position.x = Math.sin(Math.PI * 2) * 30;
+        smokeParticles[sp].rotation.z += (delta * 0.2);
+    }
+}
+
+function render() {
+
+    renderer.render( scene, camera );
+
+}
+</script>
+<style scoped></style>

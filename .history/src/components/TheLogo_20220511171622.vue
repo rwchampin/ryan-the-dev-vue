@@ -1,0 +1,61 @@
+<template>
+  <div
+    ref="logoRef"
+    id="logo-model"
+  ></div>
+</template>
+<script setup>
+  import { ref, onMounted } from 'vue';
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+  import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+  import logo from '@/assets/scene.glb?url';
+
+
+
+  const logoRef = ref(null);
+
+
+  let renderer, scene, camera;
+
+  onMounted(() => {
+
+
+    const container = logoRef.value;
+    // scene
+    scene = new THREE.Scene();
+
+    // camera
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.set(0, 0, 50);
+
+    const loader = new GLTFLoader();
+    // INIT RENDERER THAT ACTUALLY
+    // DOES THE WRITING OF THE FRAMES
+    renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+debugger;
+    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
+    // const dracoLoader = new DRACOLoader();
+    // dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
+    // loader.setDRACOLoader(dracoLoader);
+    loader.load(logo, (gltf) => {
+      console.log(gltf);
+
+      gltf.scene.position.set(0, 0, 0);
+      gltf.scenes.scale.set(100, 100, 100);
+      scene.add(gltf.scene);
+      renderer.render(gltf.scene, camera);
+
+    });
+
+
+    // const controls = new OrbitControls(camera, renderer.domElement);
+    // scene.add(controls);
+    // APPEND RENDERER TO DOM
+renderer.render(scene, camera);
+  });
+
+
+</script>
